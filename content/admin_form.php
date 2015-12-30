@@ -2,7 +2,7 @@
 	$article = $blog->get_article($_GET['id']);
 	echo "
 \t\t<div class='form'>
-\t\t\t<form method='post' action='?action=".$_GET['action']."&id=".$_GET['id']."'>
+\t\t\t<form method='post' action='?section=admin&action=".$_GET['action']."&id=".$_GET['id']."'>
 \t\t\t\t<label>Название<br>
 \t\t\t\t<input type='text' name='title' value='".$article['title']."' class='form-item' autofocus required>
 \t\t\t\t</label><br>

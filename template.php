@@ -11,7 +11,7 @@
 <body>\r
 \t<div class='container'>\r
 \t\t<h1>".$blog->get_title()."</h1>\r
-".$menu."
+".get_menu($menu)."
 \t\t<div>\r
 	";
 	include($content);
