@@ -21,6 +21,7 @@ class Blog {
 				while (true) {
 					$row = $result->fetchArray(SQLITE3_ASSOC);
 					if ($row) {
+						$row['content'] = explode("\r\n", $row['content']);
 						$return[] = $row;
 					} else {
 						break;
@@ -38,6 +39,7 @@ class Blog {
 			$result = $this->db->query($query);
 			if($result) {
 				$return = $result->fetchArray(SQLITE3_ASSOC);
+				$return['content'] = explode("\r\n", $return['content']);
 			}
 		}
 		return $return;
