@@ -6,7 +6,7 @@
 \t\t\t\t<label>Название<br>
 \t\t\t\t<input type='text' name='title' value='".$article['title']."' class='form-item' autofocus required>
 \t\t\t\t</label><br>
-\t\t\t\t<label>Дата<br>
+\t\t\t\t <label>Дата<br>
 \t\t\t\t<input type='date' name='date' value='".$article['date']."' class='form-item' required>
 \t\t\t\t</label><br>
 \t\t\t\t<label>Сожержание<br>

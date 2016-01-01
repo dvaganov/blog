@@ -1,23 +1,20 @@
 <?php
-	if ($_POST['username'] != null) {
-		if ($blog->check_user($_POST['username'], $_POST['password'])) {
-			$_SESSION['auth'] = true;
-			header("Location: ./?section=admin");
-		} else {
-			$_POST['username'] = null;
-		}
+$username = $_POST['username'] ? $_POST['username'] : null;
+if ($username != null) {
+	if ($auth->login($_POST['username'], $_POST['password'])) {
+		$_SESSION['username'] = $username;
+		header("Location: ./?section=admin");
 	} else {
-		echo
-		"
-\t\t\t<form method='post' action='?section=admin'>
-\t\t\t\t<label>Имя пользователя:<br>
-\t\t\t\t\t<input type='text' name='username'>
-\t\t\t\t</label><br>
-\t\t\t\t<label>Пароль:<br>
-\t\t\t\t\t<input type='password' name='password'>
-\t\t\t\t</label><br>
-\t\t\t\t<input type='submit' value='Войти' class='btn'>
-\t\t\t</form>
-		";
+		$_POST['username'] = null;
 	}
+}
 ?>
+<form method='post' action='?section=admin'>
+<label>Имя пользователя:<br>
+<input type='text' name='username'>
+</label><br>
+<label>Пароль:<br>
+<input type='password' name='password'>
+</label><br>
+<input type='submit' value='Войти' class='btn'>
+</form>

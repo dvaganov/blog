@@ -1,7 +1,11 @@
 <?php
-	require_once("login.php");
-	require_once("lib/class_blog.php");
+require_once("class/blog.php");
+require_once("class/authorization.php");
 
-	$blog = new Blog($db_hostname, $db_username, $db_password, $db_database);
-	$blog->set_title("My first blog");
+$db = new SQLite3('blog.db');
+
+$blog = new Blog($db);
+$blog->set_title("My first blog");
+
+$auth = new Authorization($db);
 ?>

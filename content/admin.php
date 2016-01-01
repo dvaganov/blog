@@ -1,5 +1,5 @@
 <?php
-	$articles = $blog->get_articles();
+	$articles = $blog->list_articles();
 	echo "
 \t\t\t<table class='admin-table'>\r
 \t\t\t\t<tr>\r

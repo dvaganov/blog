@@ -1,10 +1,8 @@
 <?php
-	$article = $blog->get_article($_GET['id']);
-	echo "
-\t\t\t<div class='article'>\r
-\t\t\t\t<h3>".$article['title']."</h3>\r
-\t\t\t\t<p class='date'>Опубликовано: ".$article['date']."</p>\r
-\t\t\t\t<p>".$article['content']."</p>\r
-\t\t\t</div>\r
-	";
+$article = $blog->get_article($_GET['id']);
 ?>
+<div class='article'>
+<h3><?=$article['title']?></h3>
+<p class='date'>Опубликовано: <?=$article['date']?></p>
+<p><?=$article['content']?></p>
+</div>
