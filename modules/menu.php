@@ -15,14 +15,14 @@ switch ($section) {
 		break;
 }
 
-if ($username == null) {
+if ($_SESSION['username'] == null) {
 	if ($section != 'auth') {
 		$menu->add_entry('login', 'Вход/Регистрация', '?section=auth');
 	}
 } else {
 	$menu->add_entry('profile', 'Профиль', '?section=profile');
 	$menu->add_entry('logout', 'Выход', '?action=logout');
-	if ($username == 'admin') {
+	if ($_SESSION['username'] == 'admin') {
 		$menu->set_visible('admin', true);
 	}
 }

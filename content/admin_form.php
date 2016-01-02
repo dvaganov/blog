@@ -16,9 +16,7 @@ if ($_SESSION['username'] == 'admin') {
 			<input type='date' name='date' value='<?=$article['date']?>' class='form-item' required>
 		</label><br>
 		<label>Сожержание<br>
-			<textarea name='content' class='form-item' required>
-<?=$article['content']?>
-			</textarea>
+			<textarea name='content' class='form-item' required><?=$article['content']?></textarea>
 		</label><br>
 		<input type='submit' value='Сохранить' class='btn'>
 	</form>

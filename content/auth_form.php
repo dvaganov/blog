@@ -4,12 +4,22 @@ if ($auth_error) {
 }
 ?>
 <form method='post' action='?section=auth&action=login'>
-	<label>Имя пользователя:<br>
-		<input type='text' name='username'>
-	</label><br>
-	<label>Пароль:<br>
-		<input type='password' name='password'>
-	</label><br>
-	<input type='submit' value='Войти' class='btn'>
-	<input type='submit' value='Зарегистрироваться' class='btn' formaction='?section=auth&action=registration'>
+	<table>
+		<tr>
+			<th>Имя пользователя:</th>
+			<th><input type='text' name='username'></th>
+		</tr>
+		<tr>
+			<th>Пароль:</th>
+			<th><input type='password' name='password'></th>
+		</tr>
+		<tr>
+			<th></th>
+			<th><input type='checkbox' name='autologin' checked='checked' value='1'> Запомнить</th>
+		</tr>
+		<tr>
+			<th><input type='submit' value='Войти' class='btn'></th>
+			<th><input type='submit' value='Зарегистрироваться' class='btn' formaction='?section=auth&action=registration'></th>
+		</tr>
+	</table>
 </form>

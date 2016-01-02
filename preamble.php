@@ -6,8 +6,6 @@ require_once("class/blog.php");
 require_once("class/authorization.php");
 require_once('class/menu.php');
 
-setcookie('test', true);
-
 $db = new SQLite3('blog.db');
 
 $blog = new Blog($db);

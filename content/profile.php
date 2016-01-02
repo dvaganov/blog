@@ -1,6 +1,6 @@
 <?php
-if ($username != null) {
-	$user_info = $auth->get_user_info($username);
+if ($_SESSION['username'] != null) {
+	$user_info = $auth->get_user_info($_SESSION['username']);
 } else {
 	header ("Location: ./");
 }

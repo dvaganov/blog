@@ -4,8 +4,10 @@ class Authorization {
 
 	public function __construct($db) {
 		$this->db = $db;
-		if ($_COOKIE['session_start']) {
+		if ($_COOKIE['user_id'] == md5($_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'])) {
 			session_start();
+		} else {
+			$this->logout();
 		}
 	}
 	public function add_user($username, $password) {
@@ -36,7 +38,7 @@ class Authorization {
 		}
 		return $return;
 	}
-	public function login($username, $password) {
+	public function login($username, $password, $autologin = false) {
 		$result = false;
 		if ($this->db) {
 			$username = $this->db->escapeString($username);
@@ -44,9 +46,10 @@ class Authorization {
 			$result = $this->db->query($query)->fetchArray(SQLITE3_ASSOC);
 			if ($result['hash']) {
 				if (password_verify($password, $result['hash'])) {
+					$time = $autologin ? time() + 60*60*24*30 : null; // Делаем долгий cookie, если включён автологин.
+					setcookie('user_id', md5($_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']), $time); // Для надёжной идентификации пользователя
 					session_start();
 					$_SESSION['username'] = $username;
-					setcookie('session_start', true);
 					$return = true;
 				}
 			}
@@ -54,9 +57,8 @@ class Authorization {
 		return $return;
 	}
 	public function logout() {
-		setcookie('session_start', false);
-		if (isset($_SESSION['username'])) {
-			$_SESSION['username'] = null;
+		setcookie('user_id', false);
+		if (session_status() == PHP_SESSION_ACTIVE) {
 			session_destroy();
 		}
 	}
