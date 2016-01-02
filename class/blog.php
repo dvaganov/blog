@@ -39,7 +39,7 @@ class Blog {
 			$id = (int) $id;
 			$query = "SELECT * FROM articles WHERE id='$id';";
 			$result = $this->db->query($query);
-			if($result) {
+			if ($result) {
 				$return = $result->fetchArray(SQLITE3_ASSOC);
 				foreach ($return as &$item) {
 					$item = htmlentities($item);
@@ -56,8 +56,7 @@ class Blog {
 			$date = $this->db->escapeString(trim($date));
 			if ($title != '') {
 				$query = "INSERT INTO articles (title, date, content) VALUES ('$title', '$date', '$content');";
-				$result = $this->db->exec($query);
-				if ($result) {
+				if ($this->db->exec($query)) {
 					$return = true;
 				}
 			}
@@ -73,8 +72,7 @@ class Blog {
 			$date = $this->db->escapeString(trim($date));
 			if ($id > 0 && $title != '') {
 				$query = "UPDATE articles SET title='$title', content='$content', date='$date' WHERE id='$id';";
-				$result = $this->db->query($query);
-				if($result) {
+				if ($this->db->exec($query)) {
 					$return = true;
 				}
 			}
@@ -87,8 +85,7 @@ class Blog {
 			$id = (int) $id;
 			if ($id > 0) {
 				$query = "DELETE FROM articles WHERE id = $id;";
-				$result = $this->db->exec($query);
-				if ($result) {
+				if ($this->db->exec($query)) {
 					$return = true;
 				}
 			}
