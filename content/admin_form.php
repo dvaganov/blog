@@ -11,11 +11,7 @@
 </label><br>
 <label>Сожержание<br>
 <textarea name='content' class='form-item' required>
-<?php
-foreach ($article['content'] as $p) {
-	echo "$p\r\n";
-}
-?>
+<?=$article['content']?>
 </textarea>
 </label><br>
 <input type='submit' value='Сохранить' class='btn'>

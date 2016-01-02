@@ -21,7 +21,9 @@ class Blog {
 				while (true) {
 					$row = $result->fetchArray(SQLITE3_ASSOC);
 					if ($row) {
-						$row['content'] = explode("\r\n", $row['content']);
+						foreach ($row as &$item) {
+							$item = htmlentities($item);
+						}
 						$return[] = $row;
 					} else {
 						break;
@@ -39,7 +41,9 @@ class Blog {
 			$result = $this->db->query($query);
 			if($result) {
 				$return = $result->fetchArray(SQLITE3_ASSOC);
-				$return['content'] = explode("\r\n", $return['content']);
+				foreach ($return as &$item) {
+					$item = htmlentities($item);
+				}
 			}
 		}
 		return $return;
@@ -90,6 +94,16 @@ class Blog {
 			}
 		}
 		return $return;
+	}
+	static public function parse($str) {
+		$str_formated = explode("\r\n", $str);
+		$tags_pseudo = array ('[b]', '[/b]', '[em]', '[/em]', '[url]', '[/url/]', '[/url]', '[img]', '[/img]');
+		$tags_html = array ('<strong>', '</strong>', '<em>', '</em>', '<a href="', '">', '</a>', '<img src="', '">');
+		foreach ($str_formated as &$p) {
+			$p = str_ireplace($tags_pseudo, $tags_html, $p);
+			$p = "<p>$p</p>\r";
+		}
+		return $str_formated;
 	}
 }
 ?>
