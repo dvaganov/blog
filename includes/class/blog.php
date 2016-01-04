@@ -2,15 +2,20 @@
 class Blog {
 	private $db;
 	private $title;
+	private $timedate_format;
 
-	public function __construct($db) {
+	public function __construct($db, $timedate_format) {
 		$this->db = $db;
+		$this->timedate_format = $timedate_format;
 	}
 	public function set_title($str) {
 		$this->title = $str;
 	}
 	public function get_title() {
 		return $this->title;
+	}
+	public function get_db_error() {
+		return $this->db->lastErrorMsg();
 	}
 	public function list_articles() {
 		$return = false;
@@ -24,6 +29,7 @@ class Blog {
 						foreach ($row as &$item) {
 							$item = htmlentities($item);
 						}
+						$row['date'] = date($this->timedate_format, $row['timestamp']);
 						$return[] = $row;
 					} else {
 						break;
@@ -44,18 +50,18 @@ class Blog {
 				foreach ($return as &$item) {
 					$item = htmlentities($item);
 				}
+				$return['date'] = date($this->timedate_format, $return['timestamp']);
 			}
 		}
 		return $return;
 	}
-	public function add_article($title, $content, $date) {
+	public function add_article($title, $content) {
 		$return = false;
 		if ($this->db) {
 			$title = $this->db->escapeString(trim($title));
 			$content = $this->db->escapeString(trim($content));
-			$date = $this->db->escapeString(trim($date));
 			if ($title != '') {
-				$query = "INSERT INTO articles (title, date, content) VALUES ('$title', '$date', '$content');";
+				$query = "INSERT INTO articles (title, content, timestamp) VALUES ('$title', '$content', '".time()."');";
 				if ($this->db->exec($query)) {
 					$return = true;
 				}
@@ -63,15 +69,14 @@ class Blog {
 		}
 		return $return;
 	}
-	public function edit_article($id, $title, $content, $date) {
+	public function edit_article($id, $title, $content) {
 		$return = false;
 		if ($this->db) {
 			$id = (int) $id;
 			$title = $this->db->escapeString(trim($title));
 			$content = $this->db->escapeString(trim($content));
-			$date = $this->db->escapeString(trim($date));
 			if ($id > 0 && $title != '') {
-				$query = "UPDATE articles SET title='$title', content='$content', date='$date' WHERE id='$id';";
+				$query = "UPDATE articles SET title='$title', content='$content', timestamp='".time()."' WHERE id='$id';";
 				if ($this->db->exec($query)) {
 					$return = true;
 				}
