@@ -1,8 +1,3 @@
-<?php
-if ($_GET['auth_error']) {
-	echo "<p>{$_GET['auth_error']}</p>";
-}
-?>
 <form method='post' action='<?=SCRIPT_DIR.'actions.php?action=login'?>'>
 	<table>
 		<tr>

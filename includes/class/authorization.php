@@ -85,5 +85,15 @@ class Authorization {
 			session_destroy();
 		}
 	}
+	public function add_to_session($key, $value) {
+		session_start();
+		$_SESSION[$key] = $value;
+		session_commit();
+	}
+	public function unset_session_key($key) {
+		session_start();
+		unset ($_SESSION[$key]);
+		session_commit();
+	}
 }
 ?>

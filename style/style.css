@@ -6,18 +6,39 @@ footer {
     margin-top: 30px;
 }
 .article p.date {
-	text-align: right;
-	font-style: italic;
+    text-align: right;
+    font-style: italic;
 }
 .admin-table {
-	width: 100%;
+    width: 100%;
 }
 .form label {
-	width: 100%;
+    width: 100%;
 }
 .form-item {
-	width: 100%;
+    width: 100%;
 }
 textarea.form-item {
-	height: 300px;
+    height: 300px;
+}
+.comment-list {
+    width: 70%;
+    margin: auto;
+}
+.comment-list form {
+    text-align: right;
+}
+.comment-list textarea {
+    display: block;
+    width: 100%;
+    height: 100px;
+}
+.comment {
+    margin: 15px 0;
+    border: 1px solid black;
+    padding: 10px;
+    clear: both;
+}
+.comment .date {
+    float: right;
 }
