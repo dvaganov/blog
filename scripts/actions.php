@@ -6,17 +6,29 @@ require_once(CLASS_DIR.'comments.php');
 
 $action = isset($_GET['action']) ? $_GET['action'] : null;
 
+// For protection: block actions from other groups
+if (!$auth->has_rights(ADMIN)) {
+	switch ($action) {
+		case 'add_article':
+		case 'edit_article':
+		case 'delete_article':
+		case 'delete_comment':
+			return_back();
+			break;
+	}
+}
+
 switch ($action) {
 // Article actions
-	case 'add':
+	case 'add_article':
 		(new Articles($db))->add($_POST['title'], $_POST['content']);
 		header('Location: '.ROOT_DIR.'?section=admin');
 		break;
-	case 'edit':
+	case 'edit_article':
 		(new Articles($db))->edit($_GET['id'], $_POST['title'], $_POST['content']);
 		header('Location: '.ROOT_DIR.'?section=admin');
 		break;
-	case 'delete':
+	case 'delete_article':
 		(new Articles($db))->delete($_GET['id']);
 		header('Location: '.ROOT_DIR.'?section=admin');
 		break;
@@ -28,7 +40,7 @@ switch ($action) {
 			header('Location: '.ROOT_DIR.'?section=auth&auth_error=1'); // Incorrect login/password
 		}
 		break;
-	case 'registration':
+	case 'add_user':
 		if ($auth->get_user_info($_POST['username'])) {
 			header('Location: '.ROOT_DIR.'?section=auth&auth_error=2'); // Account with the username is not empty
 		} else {
@@ -39,11 +51,11 @@ switch ($action) {
 		break;
 	case 'logout':
 		$auth->logout();
-		header('Location: '.ROOT_DIR);
+		return_back();
 		break;
 // Comments actions
 	case 'add_comment':
-		$result = (new Comments($db))->add($_POST['text'], $_GET['id'], $_SESSION['username']);
+		$result = (new Comments($db))->add($_POST['text'], $_GET['id'], $_SESSION['user_id']);
 		if (!$result) {
 			if (trim($_POST['text']) == '') {
 				$error_comment = '&error_comment=1'; // Empty comment
@@ -53,6 +65,10 @@ switch ($action) {
 			}
 		}
 		header('Location: '.ROOT_DIR.'?section=article&id='.$_GET['id'].$error_comment);
+		break;
+	case 'delete_comment':
+		$result = (new Comments($db))->delete($_GET['comment_id']);
+		return_back();
 		break;
 }
 ?>

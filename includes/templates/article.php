@@ -1,4 +1,32 @@
-<!-- Article section -->
+<?php
+if ($id) {
+	// Article section
+	require_once(CLASS_DIR.'articles.php');
+	$article = (new Articles($db))->get($id);
+	$article['content'] = $blog->parse($article['content']);
+
+	// Comments section
+	require_once(CLASS_DIR.'comments.php');
+	$comment_list = (new Comments($db))->get_all($id);
+
+	// Comment's error handle
+	switch ($_GET['error_comment']) {
+		case 1:
+			$error_comment = 'Пустой комментарий';
+			break;
+		case 2:
+			$error_comment = 'Произошла ошибка. Повторите позже.';
+			$comment_text = $_SESSION['post_text'];
+			$auth->unset_session_key('post_text');
+			break;
+	}
+} else {
+	header('Location: '.ROOT_DIR);
+}
+?>
+<!--
+Article section
+-->
 <article class='article'>
   <h3><?=$article['title']?></h3>
 <?php foreach ($article['content'] as $string) : ?>
@@ -6,30 +34,36 @@
 <?php endforeach; ?>
   <p class='date'>Опубликовано: <?=$article['date']?></p>
 </article>
-<!-- Comment section -->
-<section class='comment-list'>
-<?php if ($error_comment) : ?>
-  <p><?=$error_comment?></p>
-<?php endif; ?>
-<?php if ($_SESSION['username']) : ?>
-  <form method='post' action='<?=SCRIPT_DIR.'actions.php?action=add_comment&id='.$_GET['id']?>'>
-    <textarea name='text' required><?=$post_text?></textarea>
-    <input type='submit' class='btn' value='Отправить'>
-  </form>
-<?php endif; ?>
-<?php if ($comment_list) : ?>
-<?php foreach ($comment_list as $comment) : ?>
-  <article class='comment'>
-    <section class='comment-body'>
-<?php $comment['text'] = $blog->parse($comment['text']) ?>
-<?php foreach ($comment['text'] as $string) : ?>
-      <p><?=$string?></p>
-<?php endforeach; ?>
-    </section>
-    <small>
-      <span class='username'><?=$comment['username']?></span><span class='date'><?=$comment['date']?></span>
-    </small>
-  </article>
-<?php endforeach; ?>
-<?php endif; ?>
-</section>
+<!--
+Comment section
+-->
+<div class='comment-list'>
+<?php
+// Error message
+if ($error_comment) {
+  echo '  <p>'.$error_comment.'</p>';
+}
+if ($auth->has_rights(USER)) {
+  // Comment's form
+  $comment_form_action = SCRIPT_DIR.'actions.php?action=add_comment&id='.$id;
+  $comment_btn_value = 'Отправить';
+include TEMPLATE_DIR.'comments/form.php';
+}
+// Comment's view
+if ($comment_list) {
+  foreach ($comment_list as $comment) {
+    // Make comment editable by admin and author
+    if ($auth->has_rights(ADMIN) and $_GET['comment_id'] == $comment['id']) {
+      $comment_form_action = SCRIPT_DIR.'actions.php?action=comment_edit&comment_id='.$comment['id'];
+      $comment_text = $comment['text'];
+      $comment_btn_value = 'Изменить';
+include TEMPLATE_DIR.'comments/form.php';
+    // Else as usual
+    } else {
+      $comment['text'] = $blog->parse($comment['text']);
+include TEMPLATE_DIR.'comments/view.php';
+    }
+  }
+}
+?>
+</div>

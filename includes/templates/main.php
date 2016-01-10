@@ -12,13 +12,14 @@
   <nav>
 <?php foreach ($menu as $item) : ?>
 <?php if ($item['visible']) : ?>
-   <a href='<?=$item['href']?>'><?=$item['name']?></a><br>
+    <a href='<?=$item['href']?>'><?=$item['name']?></a><br>
 <?php endif; ?>
 <?php endforeach; ?>
   </nav>
-  <section>
 <?php include $section_template; ?>
-  </section>
+<!--
+Footer section
+-->
   <footer>
     <p>Мой первый блог<br/>Copyright &copy; 2015</p>
   </footer>

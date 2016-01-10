@@ -1,3 +1,20 @@
+<?php
+if ($_SESSION['username'] == null) {
+	switch ($_GET['auth_error']) {
+		case 1:
+			$auth_error = 'Неверный логин/пароль';
+			break;
+		case 2:
+			$auth_error = 'Аккаут с данным именем пользователя уже существует';
+			break;
+		default:
+			$auth_error = null;
+			break;
+	}
+} else {
+	header('Location: '.ROOT_DIR);
+}
+?>
 <form method='post' action='<?=SCRIPT_DIR.'actions.php?action=login'?>'>
 	<table>
 		<tr>
@@ -14,7 +31,7 @@
 		</tr>
 		<tr>
 			<th><input type='submit' value='Войти' class='btn'></th>
-			<th><input type='submit' value='Зарегистрироваться' class='btn' formaction='<?=SCRIPT_DIR.'actions.php?action=registration'?>'></th>
+			<th><input type='submit' value='Зарегистрироваться' class='btn' formaction='<?=SCRIPT_DIR.'actions.php?action=add_user'?>'></th>
 		</tr>
 	</table>
 </form>
