@@ -22,7 +22,9 @@ class Blog {
 		);
 	}
 	public function set_menu_entry_visible($key, $visible) {
-		$this->menu[$key]['visible'] = $visible;
+		if ($this->menu[$key]) {
+			$this->menu[$key]['visible'] = $visible;
+		}
 	}
 	public function get_menu() {
 		return $this->menu;

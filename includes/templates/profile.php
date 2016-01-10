@@ -1,8 +1,8 @@
 <?php
-if ($auth->has_rights(USER)) {
-	$user_info = $auth->get_user_info($_SESSION['username']);
+if ($user_id) {
+	$user_info = $user->get($user_id);
 } else {
-	header ('Location: '.ROOT_DIR);
+	return_back();
 }
 ?>
 <div>

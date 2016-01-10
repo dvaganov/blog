@@ -1,18 +1,18 @@
 <?php
-if ($auth->has_rights(ADMIN)) {
+if ($user->hasRights($user_id, ADMIN)) {
 	if ($id) {
 		require_once(CLASS_DIR.'articles.php');
 		$article = (new Articles($db))->get($id);
-		$form_action = SCRIPT_DIR.'actions.php?action=edit_article&id='.$id;
+		$form_action = SCRIPT_DIR.'actions.php?action=editArticle&id='.$id;
 		$text = "Редактирование статьи";
 		$btn_text = "Редактировать";
 	} else {
-		$form_action = SCRIPT_DIR.'actions.php?action=add_article';
+		$form_action = SCRIPT_DIR.'actions.php?action=addArticle';
 		$text = "Добавление статьи";
 		$btn_text = "Добавить";
 	}
 } else {
-	header('Location: '.ROOT_DIR);
+	return_back();
 }
 ?>
 <div class='form'>

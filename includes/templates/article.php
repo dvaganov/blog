@@ -16,12 +16,12 @@ if ($id) {
 			break;
 		case 2:
 			$error_comment = 'Произошла ошибка. Повторите позже.';
-			$comment_text = $_SESSION['post_text'];
-			$auth->unset_session_key('post_text');
+			$comment_text = $session->get('post_text');
+			$session->remove('post_text');
 			break;
 	}
 } else {
-	header('Location: '.ROOT_DIR);
+	return_back();
 }
 ?>
 <!--
@@ -41,29 +41,29 @@ Comment section
 <?php
 // Error message
 if ($error_comment) {
-  echo '  <p>'.$error_comment.'</p>';
+	echo '  <p>'.$error_comment.'</p>';
 }
-if ($auth->has_rights(USER)) {
-  // Comment's form
-  $comment_form_action = SCRIPT_DIR.'actions.php?action=add_comment&id='.$id;
-  $comment_btn_value = 'Отправить';
+// Comment's form
+if ($user_id) {
+	$comment_form_action = SCRIPT_DIR.'actions.php?action=addComment&id='.$id;
+	$comment_btn_value = 'Отправить';
 include TEMPLATE_DIR.'comments/form.php';
 }
 // Comment's view
 if ($comment_list) {
-  foreach ($comment_list as $comment) {
-    // Make comment editable by admin and author
-    if ($auth->has_rights(ADMIN) and $_GET['comment_id'] == $comment['id']) {
-      $comment_form_action = SCRIPT_DIR.'actions.php?action=comment_edit&comment_id='.$comment['id'];
-      $comment_text = $comment['text'];
-      $comment_btn_value = 'Изменить';
+	foreach ($comment_list as $comment) {
+	// Make comment editable by admin
+		if ($user->hasRights($user_id, ADMIN) and $_GET['comment_id'] == $comment['id']) {
+			$comment_form_action = SCRIPT_DIR.'actions.php?action=editComment&comment_id='.$comment['id'];
+			$comment_text = $comment['text'];
+			$comment_btn_value = 'Изменить';
 include TEMPLATE_DIR.'comments/form.php';
-    // Else as usual
-    } else {
-      $comment['text'] = $blog->parse($comment['text']);
+		// Else as usual
+		} else {
+		$comment['text'] = $blog->parse($comment['text']);
 include TEMPLATE_DIR.'comments/view.php';
-    }
-  }
+		}
+	}
 }
 ?>
 </div>

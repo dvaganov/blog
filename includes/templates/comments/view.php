@@ -9,9 +9,9 @@
   <footer>
     <small>
       <a href='<?=$_SERVER['REQUEST_URI'].'&refer_to='.$comment['id']?>'>[ Ответить ]</a>
-<?php if ($auth->has_rights(ADMIN)) : // Enable edit/delete refs ?>
+<?php if ($user->hasRights($user_id, ADMIN)) : // Enable edit/delete refs ?>
       <a href='<?=ROOT_DIR.'?section=article&id='.$id.'&comment_id='.$comment['id']?>'>[ Редактировать ]</a>
-      <a href='<?=SCRIPT_DIR.'actions.php?action=delete_comment&comment_id='.$comment['id']?>'>[ Удалить ]</a>
+      <a href='<?=SCRIPT_DIR.'actions.php?action=deleteComment&comment_id='.$comment['id']?>'>[ Удалить ]</a>
 <?php endif; ?>
     </small>
     <span class='date'><?=$comment['date']?></span>

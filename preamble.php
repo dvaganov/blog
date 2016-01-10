@@ -15,13 +15,18 @@ define('TEMPLATE_DIR', INCLUDE_DIR.'templates/');
 define('ADMIN', 1);
 define('USER', 100);
 
-require_once(CLASS_DIR.'authorization.php');
 
 $db = new SQLite3(ROOT_DIR.'blog.db');
 if ($db == false) {
 	header ('Location: ./error.html'); // DB connection error
 }
-$auth = new Authorization($db);
+
+require_once(CLASS_DIR.'session.php');
+$session = new Session($db);
+$user_id = $session->get('user_id');
+
+require_once CLASS_DIR.'user.php';
+$user = new User($db);
 
 function return_back() {
 	if ($_SERVER['HTTP_REFERER']) {

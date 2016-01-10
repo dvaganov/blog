@@ -1,5 +1,5 @@
 <?php
-if ($_SESSION['username'] == null) {
+if (!$user_id) {
 	switch ($_GET['auth_error']) {
 		case 1:
 			$auth_error = 'Неверный логин/пароль';
@@ -31,7 +31,7 @@ if ($_SESSION['username'] == null) {
 		</tr>
 		<tr>
 			<th><input type='submit' value='Войти' class='btn'></th>
-			<th><input type='submit' value='Зарегистрироваться' class='btn' formaction='<?=SCRIPT_DIR.'actions.php?action=add_user'?>'></th>
+			<th><input type='submit' value='Зарегистрироваться' class='btn' formaction='<?=SCRIPT_DIR.'actions.php?action=addUser'?>'></th>
 		</tr>
 	</table>
 </form>

@@ -1,5 +1,5 @@
 <?php
-class Authorization {
+class Session {
 	private $db;
 
 	public function __construct($db) {
@@ -29,26 +29,6 @@ class Authorization {
 			$_SESSION['group_id'] = $result['group_id'];
 			$_SESSION['hash'] = $_COOKIE['session'];
 			$return = true;
-		}
-		return $return;
-	}
-	public function add_user($username, $password) {
-		$return = false;
-		$hash = password_hash($password, PASSWORD_BCRYPT);
-		if ($hash) {
-			$username = $this->db->escapeString($username);
-			$query = "INSERT INTO users (username, hash) VALUES ('$username', '$hash');";
-			$return = $this->db->exec($query);
-		}
-		return $return;
-	}
-	public function get_user_info($username) {
-		$return = false;
-		$username = $this->db->escapeString($username);
-		$query = "SELECT * FROM users WHERE username = '{$username}';";
-		$result = $this->db->query($query);
-		if ($result) {
-			$return = $result->fetchArray(SQLITE3_ASSOC);
 		}
 		return $return;
 	}
@@ -87,23 +67,18 @@ class Authorization {
 		}
 		setcookie('session', false, -1, '/');
 	}
-	public function add_to_session($key, $value) {
+	public function add($key, $value) {
 		session_start();
 		$_SESSION[$key] = $value;
 		session_commit();
 	}
-	public function unset_session_key($key) {
+	public function get($key) {
+		return $_SESSION[$key];
+	}
+	public function remove($key) {
 		session_start();
 		unset ($_SESSION[$key]);
 		session_commit();
-	}
-	public function has_rights($group_id) {
-		if ($_SESSION['group_id'] == ADMIN or $_SESSION['group_id'] == $group_id) {
-			$return = true;
-		} else {
-			$return = false;
-		}
-		return $return;
 	}
 }
 ?>

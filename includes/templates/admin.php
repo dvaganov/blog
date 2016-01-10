@@ -1,9 +1,9 @@
 <?php
-if ($auth->has_rights(ADMIN)) {
+if ($user->hasRights($user_id, ADMIN)) {
 	require_once(CLASS_DIR.'articles.php');
 	$article_list = (new Articles($db))->get_all();
 } else {
-	header('Location: '.ROOT_DIR);
+	return_back();
 }
 ?>
 <table class='admin-table'>
@@ -14,11 +14,11 @@ if ($auth->has_rights(ADMIN)) {
 		<th></th>
 	</tr>
 <?php foreach ($article_list as $article) : ?>
-	<tr>
-		<th><?=$article['date']?></th>
-		<th><?=$article['title']?></th>
-		<th><a href='<?=ROOT_DIR.'?section=admin_form&id='.$article['id']?>'>Edite</a></th>
-		<th><a href='<?=SCRIPT_DIR.'actions.php?action=delete_article&id='.$article['id']?>'>Delete</a></th>
-	</tr>
+  <tr>
+    <th><?=$article['date']?></th>
+    <th><?=$article['title']?></th>
+    <th><a href='<?=ROOT_DIR.'?section=admin_form&id='.$article['id']?>'>Edite</a></th>
+    <th><a href='<?=SCRIPT_DIR.'actions.php?action=deleteArticle&id='.$article['id']?>'>Delete</a></th>
+  </tr>
 <?php endforeach; ?>
 </table>

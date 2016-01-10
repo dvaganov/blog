@@ -9,10 +9,11 @@ $blog->set_title("My first blog");
 $section = isset($_GET['section']) ? $_GET['section'] : null;
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 
-// Menu formation
 $blog->add_menu_entry('home', 'Главная', ROOT_DIR);
-if ($_SESSION['user_id'] != null) {
-	if ($auth->has_rights(ADMIN)) {
+
+// Create menu
+if ($user_id) {
+	if ($user->hasRights($user_id, ADMIN)) {
 		$blog->add_menu_entry('admin', 'Панель Администратора', ROOT_DIR.'?section=admin');
 		$blog->add_menu_entry('add', 'Добавить статью', ROOT_DIR.'?section=admin_form', false);
 	}
