@@ -25,20 +25,19 @@ switch ($action) {
 			header('Location: '.ROOT_DIR.'?section=auth&auth_error=2'); // Account with the username is not empty
 		} else {
 			$user->add($_POST['username'], $_POST['password']);
-			$session->login($_POST['username'], $_POST['password']);
+			$user->login($_POST['username'], $_POST['password']);
 			header('Location: '.ROOT_DIR);
 		}
 		break;
-// Session actions
 	case 'login':
-		if ($session->login($_POST['username'], $_POST['password'], $_POST['autologin'])) {
+		if ($user->login($_POST['username'], $_POST['password'], $_POST['autologin'])) {
 			header('Location: '.ROOT_DIR);
 		} else {
 			header('Location: '.ROOT_DIR.'?section=auth&auth_error=1'); // Incorrect login/password
 		}
 		break;
 	case 'logout':
-		$session->logout();
+		$user->logout();
 		return_back();
 		break;
 // Article actions
@@ -62,7 +61,7 @@ switch ($action) {
 				$error_comment = '&error_comment=1'; // Empty comment
 			} else {
 				$error_comment = '&error_comment=2'; // Error in DataBase
-				$auth->add_to_session('post_text', $_POST['text']);
+				Session\set('post_text', $_POST['text']);
 			}
 		}
 		header('Location: '.ROOT_DIR.'?section=article&id='.$_GET['id'].$error_comment);

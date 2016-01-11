@@ -17,7 +17,7 @@ if ($id) {
 		case 2:
 			$error_comment = 'Произошла ошибка. Повторите позже.';
 			$comment_text = $session->get('post_text');
-			$session->remove('post_text');
+			Session\remove('post_text');
 			break;
 	}
 } else {
