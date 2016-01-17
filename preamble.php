@@ -21,11 +21,9 @@ if ($db == false) {
 }
 
 require_once(CLASS_DIR.'session.php');
-$session = new Session($db);
-$user_id = $session->get('user_id');
-
 require_once CLASS_DIR.'user.php';
 $user = new User($db);
+$user_id = Session\get('user_id');
 
 function return_back() {
 	if ($_SERVER['HTTP_REFERER']) {
