@@ -15,7 +15,6 @@ define('TEMPLATE_DIR', INCLUDE_DIR.'templates/');
 define('ADMIN', 1);
 define('USER', 100);
 
-
 $db = new SQLite3(ROOT_DIR.'blog.db');
 if ($db == false) {
 	header ('Location: ./error.html'); // DB connection error
